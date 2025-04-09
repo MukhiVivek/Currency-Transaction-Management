@@ -1,0 +1,1 @@
+{"root":["./src/checkuser.ts","./src/config.ts","./src/index.ts","./src/models/customer.ts","./src/models/transaction.ts","./src/models/user.ts","./src/routes/customer.ts","./src/routes/transaction.ts","./src/routes/user.ts"],"version":"5.8.3"}
