@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { JWT_PASSWORD } from "./config";
 
 // Extend Request to include userId
 interface AuthRequest extends Request {
@@ -11,7 +10,8 @@ export const checkuserlogin = async (req: AuthRequest, res: Response, next: Next
   try {
     const authHeader = req.headers['token'];
     console.log(authHeader)
-    const decoded = jwt.verify(authHeader as string, JWT_PASSWORD) as JwtPayload;
+    //@ts-ignore
+    const decoded = jwt.verify(authHeader as string, process.env.JWT_PASSWORD) as JwtPayload;
 
     req.userId = decoded.id;
     next();
