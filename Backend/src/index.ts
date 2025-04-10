@@ -1,7 +1,9 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import { mongodb_URL } from "./config";
 
 const app = express();
 app.use(express.json());
@@ -9,7 +11,7 @@ app.use(cors());
 
 //mongose 
 
-const dburl :any  = mongodb_URL ;
+const dburl :any  = process.env.MONGO_URI ;
 
 main().then(() => {
   console.log("connected to DB");
@@ -32,7 +34,7 @@ app.use("/api/v1/customer", customer);
 app.use("/api/v1/transaction", transaction);
  
 app.get("/", (req, res) =>{
-  res.send("Server is on");
+  res.send("Server is on test-1");
 });
 
 

@@ -1,5 +1,7 @@
 
-function Home() {
+
+
+function Home() {  
     return (
         <div className="h-full">
             <div className="fixed top-0 w-full bg-white  dark:bg-black dark:text-white ">

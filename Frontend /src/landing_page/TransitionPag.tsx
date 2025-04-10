@@ -1,4 +1,6 @@
+import axios from 'axios';
 import React, { useState } from 'react';
+import { BACKEND_URL } from '../Config';
 
 const currencies = ['INR', 'USD', 'RUB'];
 
@@ -13,11 +15,31 @@ const TransitionPag: React.FC = () => {
 
   const [rate, setRate] = useState<number>(1);
 
+  async function submit() {
+    const res = await axios.post(BACKEND_URL + "/api/v1/transaction/add", {
+      sender_name: senderName,
+      s_amount : senderAmount,
+      s_currency : senderCurrency,
+      receiver_name : receiverName,
+      r_amount : receiverAmount,
+      r_currency : receiverCurrency,
+      rate : rate,
+      status : "pending",
+    }, {
+      headers:{
+        token: localStorage.getItem("token")
+      }
+      
+    })
+
+    alert("sucess" + res)
+  }
+
   const inputClass = "w-full p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all";
   const selectClass = "p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all";
 
   return (
-    <div className="bg-white dark:bg-black p-4 sm:p-6 rounded-none sm:rounded-2xl shadow-none sm:shadow-lg w-full min-h-screen flex flex-col justify-between">
+    <div className="bg-white dark:bg-black p-4 sm:p-6 rounded-none sm:rounded-2xl shadow-none sm:shadow-lg w-full min-h-screen  justify-between">
       <div className="space-y-6">
         {/* Sender Section */}
         <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl">
@@ -93,8 +115,11 @@ const TransitionPag: React.FC = () => {
       </div>
 
       {/* Submit Button */}
-      <div className="pt-6">
-        <button className="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all">
+      <div className="pt-10">
+        <button 
+          onClick={submit}
+          className="w-full py-3 bg-blue-600 text-white  rounded-xl hover:bg-blue-700 transition-all"
+          >
           Submit Transaction
         </button>
       </div>

@@ -3,10 +3,10 @@ import customer from "../models/customer";
 import { checkuserlogin } from "../checkuser";
 const router = express.Router({ mergeParams: true });
 
-router.get("/data",checkuserlogin, async (req, res) => {
+router.get("/data" ,checkuserlogin ,  async (req, res) => {
     try {
         //@ts-ignore
-        const data = await customer.find({creater_id: req.userId})
+        const data = await customer.find()
 
         res.json({
             data

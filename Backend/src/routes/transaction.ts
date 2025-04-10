@@ -2,19 +2,20 @@ import express from "express";
 import customer from "../models/customer";
 import transaction from "../models/transaction";
 import { checkuserlogin } from "../checkuser";
+import { idText } from "typescript";
 const router = express.Router({ mergeParams: true });
 
 router.get("/data",checkuserlogin, async (req, res) => {
     try {
         //@ts-ignore
-        const data = await transaction.find({creater_id: req.userId})
+        const data = await transaction.find({creater_id: req.userId}).populate("sender_id").populate("receiver_id");
 
         res.json({
             data
         })
-    } catch(e) {
-        res.status(403).json({
-            message: "You are not logged in"
+    } catch(e : any) {
+        res.status(401).json({
+            message: e.message,
         })
     }
 });
@@ -22,7 +23,7 @@ router.get("/data",checkuserlogin, async (req, res) => {
 router.post("/add", checkuserlogin , async (req, res) => {
 
     const {
-        date,
+        date = new Date(),
         sender_name,
         s_amount,
         s_currency,
@@ -32,13 +33,12 @@ router.post("/add", checkuserlogin , async (req, res) => {
         rate,
         status,
         note,
-        
     }= req.body;
 
     try {
 
         const sender_id = await customer.findOne({name: sender_name});
-        const receiver_id = await customer.findOne({name: receiver_name});
+        const receiver_id = await customer.findOne({name: receiver_name});        
         
         const newTransaction = await transaction.create({
             date,
@@ -49,7 +49,7 @@ router.post("/add", checkuserlogin , async (req, res) => {
             r_amount,
             r_currency,
             rate,
-            status,
+            status : "success",
             note,
             //@ts-ignore
             creater_id: req.userId
