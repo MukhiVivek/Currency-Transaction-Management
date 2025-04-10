@@ -20,7 +20,7 @@ function Loged() {
   const bgColor = getColorFromLetter(firstLetter);
   
     return ( 
-        <div className="min-h-screen flex flex-col justify-between bg-gradient-to-br dark:from-gray-900 dark:via-black dark:to-gray-900 dark:text-white p-6">
+        <div className="min-h-screen justify-between bg-gradient-to-br dark:from-gray-900 dark:via-black dark:to-gray-900 dark:text-white p-6">
       <div className="flex flex-col items-center">
         <div className={`w-28 h-28 rounded-full flex items-center justify-center text-5xl font-bold text-white shadow-lg ${bgColor}`}> 
           {firstLetter}
@@ -64,7 +64,7 @@ function Loged() {
       </div>
 
       <div className="mt-10 w-full max-w-md mx-auto">
-        <button className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold text-lg shadow-lg transition duration-300">
+        <button className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-blue-500 hover:bg-red-700 text-white font-semibold text-lg shadow-lg transition duration-300">
           <LogOut size={22} /> Logout
         </button>
       </div>
