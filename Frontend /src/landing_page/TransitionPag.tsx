@@ -28,8 +28,7 @@ const TransitionPag: React.FC = () => {
     }, {
       headers:{
         token: localStorage.getItem("token")
-      }
-      
+      }  
     })
 
     alert("sucess" + res)

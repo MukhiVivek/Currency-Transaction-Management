@@ -1,7 +1,10 @@
+import { use, useEffect, useState } from "react";
 
 interface CustomerCardProps {
     name: string;
-    balance: number;
+    i_balance: number;
+    r_balance: number;
+    u_balance: number;
 }
 
 const getRandomColor = (seed: string) => {
@@ -16,7 +19,34 @@ const getRandomColor = (seed: string) => {
 };
 
 
-export function CustomerCards({ name, balance }: CustomerCardProps) {
+export function CustomerCards({ name, i_balance, r_balance, u_balance }: CustomerCardProps) {
+
+    const [inr , setInr] = useState<boolean | null>(null);
+    const [rub , setRub] = useState<boolean | null>(null);
+    const [usd , setUsd] = useState<boolean | null>(null);
+
+    useEffect(() => {
+        if(i_balance === 0){
+            setInr(false);
+          }else{
+            setInr(true);
+          }
+          if(r_balance === 0){
+            setRub(false);
+          }else{
+            setRub(true);
+          }
+          if(u_balance === 0){
+            setUsd(false);
+          }else{
+            setUsd(true);
+          }
+
+          if(i_balance === 0 && r_balance === 0 && u_balance === 0){
+            setInr(true);
+          }
+          
+    }, [i_balance, r_balance, u_balance]);
 
     return (
         <div className="flex items-center justify-between bg-white dark:bg-gray-900 shadow-md rounded-xl p-4 mb-4">
@@ -33,8 +63,16 @@ export function CustomerCards({ name, balance }: CustomerCardProps) {
                 </span>
             </div>
 
-            <span className="text-md font-semibold text-green-600 dark:text-green-400">
-                ${balance}
+            <span className="text-left items-end font-semibold text-green-600 dark:text-green-400">
+                <div className="">
+                    {inr ? `₹ ${new Intl.NumberFormat('en-IN').format(i_balance)}` : null}
+                </div>
+                <div>
+                    {rub ? `₽ ${new Intl.NumberFormat('en-IN').format(r_balance)}` : null}
+                </div>
+                <div >
+                    {usd ? `$ ${new Intl.NumberFormat('en-IN').format(u_balance)}` : null}
+                </div>  
             </span>
         </div>
     )

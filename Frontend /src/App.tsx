@@ -8,11 +8,12 @@ import Console from './landing_page/Console';
 import Customer from './landing_page/Customer';
 import SignUp from './landing_page/Signup';
 import SignIn from './landing_page/Signin';
+import AddCustomer from './landing_page/AddCustomer';
 
 function App() {
   return (
       <Router>
-        <div className="dark:bg-black dark:text-white min-h-screen" >
+        <div className="dark:bg-black dark:text-white min-h-screen mb-12" >
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/transaction" element={<TransactionCard />} />
@@ -21,6 +22,7 @@ function App() {
             <Route path="/console" element={<Console />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
+            <Route path="/customer/add" element={<AddCustomer />} />
           </Routes>
           {/* <div className='dark:bg-black dark:text-white h-dvh'>
           </div> */}

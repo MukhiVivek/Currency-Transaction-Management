@@ -23,20 +23,24 @@ router.post("/add", checkuserlogin , async (req, res) => {
     const {
         name,
         phone,
-        balance,
+        inr,
+        usdt,
+        rub
     } = req.body;
 
     try {
         const newCustomer = await customer.create({
             name,
             phone,
-            balance,
+            i_balance : inr,
+            r_balance : rub,
+            u_balance : usdt,
             //@ts-ignore
             creater_id: req.userId
         })
 
         res.status(201).json({
-            message: "Customer added successfully"
+            message: `Customer added successfully + ${newCustomer}`
         })
         
     }catch(e) {

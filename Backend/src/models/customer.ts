@@ -8,7 +8,15 @@ const customerSchema = new mongoose.Schema({
   phone: {
     type: Number,
   },
-  balance: {
+  i_balance: {
+    type: Number,
+    required: true,
+  },
+  r_balance: {
+    type: Number,
+    required: true,
+  },
+  u_balance: {
     type: Number,
     required: true,
   },
