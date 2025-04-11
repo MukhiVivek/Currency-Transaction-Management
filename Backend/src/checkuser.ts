@@ -9,7 +9,6 @@ interface AuthRequest extends Request {
 export const checkuserlogin = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers['token'];
-    console.log(authHeader)
     //@ts-ignore
     const decoded = jwt.verify(authHeader as string, process.env.JWT_PASSWORD) as JwtPayload;
 
