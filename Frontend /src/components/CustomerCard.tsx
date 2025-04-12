@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 
 interface CustomerCardProps {
     name: string;
-    i_balance: number;
-    r_balance: number;
-    u_balance: number;
+    INR: number;
+    RUB: number;
+    USD: number;
 }
 
 const getRandomColor = (seed: string) => {
@@ -19,34 +19,34 @@ const getRandomColor = (seed: string) => {
 };
 
 
-export function CustomerCards({ name, i_balance, r_balance, u_balance }: CustomerCardProps) {
+export function CustomerCards({ name, INR, RUB, USD }: CustomerCardProps) {
 
     const [inr , setInr] = useState<boolean | null>(null);
     const [rub , setRub] = useState<boolean | null>(null);
     const [usd , setUsd] = useState<boolean | null>(null);
 
     useEffect(() => {
-        if(i_balance === 0){
+        if(INR === 0){
             setInr(false);
           }else{
             setInr(true);
           }
-          if(r_balance === 0){
+          if(RUB === 0){
             setRub(false);
           }else{
             setRub(true);
           }
-          if(u_balance === 0){
+          if(USD === 0){
             setUsd(false);
           }else{
             setUsd(true);
           }
 
-          if(i_balance === 0 && r_balance === 0 && u_balance === 0){
+          if(INR === 0 && RUB === 0 && USD === 0){
             setInr(true);
           }
           
-    }, [i_balance, r_balance, u_balance]);
+    }, [INR, RUB, USD]);
 
     return (
         <div className="flex items-center justify-between bg-white dark:bg-gray-900 shadow-md rounded-xl p-4 mb-4">
@@ -63,15 +63,15 @@ export function CustomerCards({ name, i_balance, r_balance, u_balance }: Custome
                 </span>
             </div>
 
-            <span className="text-left items-end font-semibold text-green-600 dark:text-green-400">
-                <div className="">
-                    {inr ? `₹ ${new Intl.NumberFormat('en-IN').format(i_balance)}` : null}
+            <span className="text-left items-end font-semibold ">
+                <div className={INR > 0 ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+                    {inr ? `₹ ${new Intl.NumberFormat('en-IN').format(Math.abs(INR))}` : null}
                 </div>
-                <div>
-                    {rub ? `₽ ${new Intl.NumberFormat('en-IN').format(r_balance)}` : null}
+                <div className={RUB > 0 ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+                    {rub ? `₽ ${new Intl.NumberFormat('en-IN').format(Math.abs(RUB))}` : null}
                 </div>
-                <div >
-                    {usd ? `$ ${new Intl.NumberFormat('en-IN').format(u_balance)}` : null}
+                <div className={USD > 0 ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+                    {usd ? `$ ${new Intl.NumberFormat('en-IN').format(Math.abs(USD))}` : null}
                 </div>  
             </span>
         </div>

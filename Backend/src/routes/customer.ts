@@ -32,9 +32,9 @@ router.post("/add", checkuserlogin , async (req, res) => {
         const newCustomer = await customer.create({
             name,
             phone,
-            i_balance : inr,
-            r_balance : rub,
-            u_balance : usdt,
+            INR : inr,
+            RUB : rub,
+            USD : usdt,
             //@ts-ignore
             creater_id: req.userId
         })
