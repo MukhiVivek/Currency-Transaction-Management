@@ -6,7 +6,7 @@ const router = express.Router({ mergeParams: true });
 router.get("/data" ,checkuserlogin ,  async (req, res) => {
     try {
         //@ts-ignore
-        const data = await customer.find()
+        const data = await customer.find({ creater_id: req.userId })
 
         res.json({
             data
