@@ -19,7 +19,7 @@ const TransitionPag: React.FC = () => {
   const [note, setNote] = useState<string>("");
   
   async function submit() {
-    const res = await axios.post(BACKEND_URL + "/api/v1/transaction/add", {
+    await axios.post(BACKEND_URL + "/api/v1/transaction/add", {
       sender_name: senderName,
       s_amount: senderAmount,
       s_currency: senderCurrency,
