@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { BACKEND_URL } from "../Config";
+// import axios from 'axios';
+// import { BACKEND_URL } from "../Config";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
