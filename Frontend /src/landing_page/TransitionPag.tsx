@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { BACKEND_URL } from '../Config';
+import { useCustomer } from '../hooks/useCustomer';
 
 const currencies = ['INR', 'USD', 'RUB'];
 
@@ -15,27 +16,42 @@ const TransitionPag: React.FC = () => {
 
   const [rate, setRate] = useState<number>(1);
 
+  const [note, setNote] = useState<string>("");
+  
   async function submit() {
     const res = await axios.post(BACKEND_URL + "/api/v1/transaction/add", {
       sender_name: senderName,
-      s_amount : senderAmount,
-      s_currency : senderCurrency,
-      receiver_name : receiverName,
-      r_amount : receiverAmount,
-      r_currency : receiverCurrency,
-      rate : rate,
-      status : "pending",
+      s_amount: senderAmount,
+      s_currency: senderCurrency,
+      receiver_name: receiverName,
+      r_amount: receiverAmount,
+      r_currency: receiverCurrency,
+      rate: rate,
+      status: "pending",
+      note: note,
     }, {
-      headers:{
+      headers: {
         token: localStorage.getItem("token")
-      }  
+      }
     })
 
-    alert("sucess" + res)
+    alert(" Transaction Successfully Added");
+
+    setvalue()
+  }
+
+  function setvalue() {
+    setSenderName("");
+    setSenderAmount(0);
+    setReceiverName("");
+    setReceiverAmount(0);
+    setRate(1);
   }
 
   const inputClass = "w-full p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all";
   const selectClass = "p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all";
+
+  const { data } = useCustomer();
 
   return (
     <div className="bg-white dark:bg-black p-4 sm:p-6 rounded-none sm:rounded-2xl shadow-none sm:shadow-lg w-full min-h-screen  justify-between">
@@ -49,15 +65,21 @@ const TransitionPag: React.FC = () => {
             value={senderName}
             onChange={(e) => setSenderName(e.target.value)}
             className={inputClass}
+            list="customer_name"
           />
+
           <div className="flex items-center gap-4 mt-3">
             <input
               type="number"
               placeholder="Amount"
               value={senderAmount}
-              onChange={(e) => setSenderAmount(Number(e.target.value))}
+              onChange={(e: any) => {
+                setSenderAmount(Number(e.target.value));
+                setReceiverAmount(Number(((e.target.value) * rate).toFixed(2)));
+              }}
               className={inputClass}
             />
+
             <select
               value={senderCurrency}
               onChange={(e) => setSenderCurrency(e.target.value)}
@@ -77,7 +99,10 @@ const TransitionPag: React.FC = () => {
             type="number"
             step="0.01"
             value={rate}
-            onChange={(e) => setRate(Number(e.target.value))}
+            onChange={(e: any) => {
+              setRate(Number(e.target.value));
+              setReceiverAmount(Number(((senderAmount ? senderAmount : 0) * e.target.value).toFixed(2)));
+            }}
             className="w-32 text-center p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
           />
         </div>
@@ -91,6 +116,7 @@ const TransitionPag: React.FC = () => {
             value={receiverName}
             onChange={(e) => setReceiverName(e.target.value)}
             className={inputClass}
+            list="customer_name"
           />
           <div className="flex items-center gap-4 mt-3">
             <input
@@ -111,17 +137,32 @@ const TransitionPag: React.FC = () => {
             </select>
           </div>
         </div>
+        <div>
+          <label className="block text-sm mb-2">Note</label>
+          <textarea
+            placeholder="Note"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl bg-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        
       </div>
 
       {/* Submit Button */}
       <div className="pt-10">
-        <button 
+        <button
           onClick={submit}
           className="w-full py-3 bg-blue-600 text-white  rounded-xl hover:bg-blue-700 transition-all"
-          >
+        >
           Submit Transaction
         </button>
       </div>
+      <datalist id="customer_name">
+        {data.map((c: any) =>
+          <option value={c.name} />
+        )}
+      </datalist>
     </div>
   );
 };

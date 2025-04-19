@@ -1,6 +1,9 @@
 import express from "express";
 import customer from "../models/customer";
 import { checkuserlogin } from "../checkuser";
+import transaction from "../models/transaction";
+import { send } from "process";
+import { idText } from "typescript";
 const router = express.Router({ mergeParams: true });
 
 router.get("/data" ,checkuserlogin ,  async (req, res) => {
@@ -29,7 +32,7 @@ router.post("/add", checkuserlogin , async (req, res) => {
     } = req.body;
 
     try {
-        const newCustomer = await customer.create({
+        const newCustomer = new customer({
             name,
             phone,
             INR : inr,
@@ -38,7 +41,9 @@ router.post("/add", checkuserlogin , async (req, res) => {
             //@ts-ignore
             creater_id: req.userId
         })
-
+        
+        await newCustomer.save();
+        
         res.status(201).json({
             message: `Customer added successfully + ${newCustomer}`
         })
@@ -50,5 +55,22 @@ router.post("/add", checkuserlogin , async (req, res) => {
     }
     
 });
+
+router.get("/:id" ,checkuserlogin, async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        //@ts-ignore
+        const data = await customer.findById(id);
+        
+        res.json({
+            data
+        })
+    } catch(e) {
+        res.status(403).json({
+            message: "You are not logged in"
+        })
+    }
+})
 
 export default router;

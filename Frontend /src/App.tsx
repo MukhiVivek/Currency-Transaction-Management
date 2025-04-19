@@ -9,6 +9,7 @@ import Customer from './landing_page/Customer';
 import SignUp from './landing_page/Signup';
 import SignIn from './landing_page/Signin';
 import AddCustomer from './landing_page/AddCustomer';
+import DetailCustomer from './landing_page/DetailCustomer';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/customer/add" element={<AddCustomer />} />
+            <Route path="/customer/:id" element={<DetailCustomer />} />
           </Routes>
           {/* <div className='dark:bg-black dark:text-white h-dvh'>
           </div> */}

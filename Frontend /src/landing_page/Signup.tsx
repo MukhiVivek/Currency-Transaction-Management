@@ -12,19 +12,23 @@ const SignUp = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
         
-    const res = await axios.post(BACKEND_URL + "/api/v1/user/signup", {
-      username: form.username,
-      password: form.password,
-    });
+  //   const res = await axios.post(BACKEND_URL + "/api/v1/user/signup", {
+  //     username: form.username,
+  //     password: form.password,
+  //   });
 
-    alert(res.data.message);
+  //   alert(res.data.message);
 
-    navigate("/signin")
+  //   navigate("/signin")
     
-  };
+  // };
+
+  function handleSubmit() {
+    navigate("/signin")
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800 px-4">

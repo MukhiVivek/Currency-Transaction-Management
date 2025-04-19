@@ -25,17 +25,14 @@ interface data {
 
 function Transation() {
 
-  const data = useTransaction();
-
-  console.log(data);
-  
+  const data = useTransaction().slice().reverse();
 
   return (
-    <>
+    <div className="mx-2">
     {data.map((transaction : data) =>
-      <TransactionCard date={transaction.date} sender_name={transaction.sender_id.name} s_amount={transaction.s_amount} s_currency={transaction.s_currency} receiver_name={transaction.receiver_id.name} r_amount={transaction.r_amount} r_currency={transaction.r_currency} rate={transaction.rate} status={transaction.status} />
+      <TransactionCard  date={transaction.date} sender_name={transaction.sender_id.name} s_amount={transaction.s_amount} s_currency={transaction.s_currency} receiver_name={transaction.receiver_id.name} r_amount={transaction.r_amount} r_currency={transaction.r_currency} rate={transaction.rate} status={transaction.status} />
     )}
-    </>
+    </div>
   );
 }
 

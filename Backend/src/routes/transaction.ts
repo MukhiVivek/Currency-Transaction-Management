@@ -39,8 +39,6 @@ router.post("/add", checkuserlogin, async (req: any, res: any) => {
     const session = await mongoose.startSession();
     session.startTransaction();
 
-
-
     interface Customer {
         name?: string;
         phone?: number;
@@ -52,8 +50,8 @@ router.post("/add", checkuserlogin, async (req: any, res: any) => {
 
     try {
 
-        const sender_id = await customer.findOne({ name: sender_name }).session(session);
-        const receiver_id = await customer.findOne({ name: receiver_name }).session(session);
+        const sender_id = await customer.findOne({ name: sender_name , creater_id: req.userId }).session(session);
+        const receiver_id = await customer.findOne({ name: receiver_name , creater_id: req.userId }).session(session);
 
         (sender_id as any)[s_currency] -= s_amount;
         (receiver_id as any)[r_currency] += r_amount;
@@ -61,12 +59,12 @@ router.post("/add", checkuserlogin, async (req: any, res: any) => {
         await (sender_id as any).save({ session });
         await (receiver_id as any).save({ session });
 
-        const newTransaction = await transaction.create({
+        const [newTransaction] = await transaction.create([{
             date,
-            sender_id,
+            sender_id: sender_id?._id,
             s_amount,
             s_currency,
-            receiver_id,
+            receiver_id: receiver_id?._id,
             r_amount,
             r_currency,
             rate,
@@ -74,7 +72,7 @@ router.post("/add", checkuserlogin, async (req: any, res: any) => {
             note,
             //@ts-ignore
             creater_id: req.userId
-        }, {session});
+        }], { session });
 
         await session.commitTransaction();
         session.endSession();
@@ -89,5 +87,29 @@ router.post("/add", checkuserlogin, async (req: any, res: any) => {
         return res.status(500).json({ message: "Something went wrong" });
     }
 });
+
+router.get("/:id", checkuserlogin, async (req, res) => {
+    try {
+        const { id } = req.params;
+
+
+        const data = await transaction.find({
+            $or: [
+                { sender_id: id },
+                { receiver_id: id }
+            ],
+            //@ts-ignore
+            creater_id: req.userId, // Optional: filters by who created the transaction
+        }).populate("sender_id").populate("receiver_id");
+
+        res.json({
+            data
+        })
+    } catch (e) {
+        res.status(403).json({
+            message: "You are not logged in"
+        })
+    }
+})
 
 export default router;
