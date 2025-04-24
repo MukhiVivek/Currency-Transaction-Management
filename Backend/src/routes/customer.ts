@@ -1,9 +1,6 @@
 import express from "express";
 import customer from "../models/customer";
 import { checkuserlogin } from "../checkuser";
-import transaction from "../models/transaction";
-import { send } from "process";
-import { idText } from "typescript";
 const router = express.Router({ mergeParams: true });
 
 router.get("/data" ,checkuserlogin ,  async (req, res) => {

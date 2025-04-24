@@ -34,7 +34,10 @@ app.use("/api/v1/customer", customer);
 app.use("/api/v1/transaction", transaction);
  
 app.get("/", (req, res) =>{
-  res.send("Server is on test-1");
+
+  console.log("Connected to server");
+  
+  res.send("Server is online");
 });
 
 
