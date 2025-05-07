@@ -1,6 +1,6 @@
 
 import { LineChart, BarChart, PieChart } from '@mui/x-charts';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Filter from '../../icons/Filtericon';
 import useTransaction from '../../hooks/useTransaction';
 
@@ -11,7 +11,7 @@ const Home = () => {
     console.log(transactionData);
     
     
-    const [summary, setSummary] = useState({
+    const [summary] = useState({
         INR: 5000,
         USD: 2300,
         RUB: 10000,
