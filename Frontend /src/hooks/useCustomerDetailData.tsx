@@ -16,6 +16,8 @@ interface transactionData {
     amount: number; 
     phone: number;
   };
+  r_balance: number;
+  s_balance: number;
   r_amount: number;
   r_currency: "INR"| "RUB" | "USD";
   rate: number;

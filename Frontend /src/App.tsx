@@ -3,7 +3,7 @@ import BtmNav from './landing_page/BtmNav';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import TransitionPag from './landing_page/TransitionPag';
 import TransactionCard from './landing_page/TransationHistory';
-import Home from './landing_page/Home';
+import Home from './landing_page/Home/Home';
 import Console from './landing_page/Console';
 import Customer from './landing_page/Customer';
 import SignUp from './landing_page/Signup';

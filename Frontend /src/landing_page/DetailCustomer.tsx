@@ -17,7 +17,7 @@ function DetailCustomer() {
 
     doc.text(`${customerdata.name} - Transaction Report`, 14, 15);
 
-    const tableColumn = ["Date", "Name", "Note", "Credit", "Debit", "Rate", "Currency", "Status"];
+    const tableColumn = ["Date", "Name", "Note", "Credit", "Debit", "Rate", "Currency", "Balance", "Status"];
     const tableRows: any[] = [];
 
     transactionsdata.slice().reverse().forEach((transaction) => {
@@ -31,6 +31,7 @@ function DetailCustomer() {
         isSender ? `${transaction.s_currency} ${transaction.s_amount}` : "",
         transaction.rate,
         `${transaction.r_currency} => ${transaction.s_currency}`,
+        isSender ? `${transaction.r_currency} ${transaction.r_balance}` : `${transaction.s_currency} ${transaction.s_balance}`,
         transaction.status,
       ];
       tableRows.push(rowData);
@@ -102,14 +103,13 @@ function DetailCustomer() {
                   <td className="px-6 py-3 whitespace-nowrap ">{currencySymbols[transaction.s_currency] + " "}{new Intl.NumberFormat('en-IN').format(Math.abs(transaction.sender_id.name == customerdata.name ? transaction.s_amount : 0))}</td>
                   <td className="px-6 py-3 whitespace-nowrap ">{transaction.rate}</td>
                   <td className="px-6 py-3 whitespace-nowrap ">{currencySymbols[transaction.r_currency]} =&gt; {currencySymbols[transaction.s_currency]}</td>
-                  <td className="px-6 py-3 whitespace-nowrap ">{ }</td>
+                  <td className={`px-6 py-3 whitespace-nowrap`}>{transaction.sender_id.name == customerdata.name ? currencySymbols[transaction.r_currency] +  (new Intl.NumberFormat('en-IN').format(Math.abs(transaction.s_balance))) : currencySymbols[transaction.s_currency] + " " + (new Intl.NumberFormat('en-IN').format(Math.abs(transaction.r_balance)))}</td>
                   <td className="px-6 py-3 whitespace-nowrap  text-green-500 font-semibold">{transaction.status}</td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
-
       </div>
     </>
   );
