@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Loged from "../components/ui/Logedpag";
 import NotLoggedInPage from "../components/ui/Notloginpag";
+import Logged from "../components/ui/Logedpag";
 
 const Console = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null); // null = not yet checked
@@ -21,7 +21,7 @@ const Console = () => {
 
   return (
     <>
-      {isLoggedIn ? <Loged /> : <NotLoggedInPage />}
+      {isLoggedIn ? <Logged /> : <NotLoggedInPage />}
     </>
   );
 };

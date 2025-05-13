@@ -8,10 +8,12 @@ const transactionSchema = new mongoose.Schema({
   },
   s_amount : Number,
   s_currency : String,
+  s_balance : Number,
   receiver_id : {
     type: mongoose.Schema.Types.ObjectId,
     ref: "customer",
   },
+  r_balance : Number,
   r_amount : Number,
   r_currency : String,
   status : String,

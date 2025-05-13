@@ -1,9 +1,6 @@
 import { LogOut, User, Moon, ShieldCheck, BellRing } from "lucide-react";
 import { Link } from "react-router-dom";
-
-const user = {
-  name: "Sanket Mukhi",
-};
+import { useUser } from "../../hooks/useUser";
 
 const getColorFromLetter = (letter: string) => {
   const colors = [
@@ -16,7 +13,14 @@ const getColorFromLetter = (letter: string) => {
   return colors[index];
 };
 
-function Loged() {
+function Logged() {
+
+  const userData : any = useUser()
+
+  const user = {
+    name: userData?.data?.username || "User",
+  };
+
   const firstLetter = user.name[0].toUpperCase();
   const bgColor = getColorFromLetter(firstLetter);
 
@@ -37,7 +41,7 @@ function Loged() {
         <div className="mt-10 w-full max-w-md space-y-6" >
           <Link to="/customer/add" className="block">
             <div className="bg-white/10 backdrop-blur-md p-5 rounded-2xl flex hover:bg-white/20 items-center gap-4 shadow-md">
-              <User className="text-blue-400"  />
+              <User className="text-blue-400" />
               <div>
                 <h2 className="font-semibold text-lg">Customer Add</h2>
                 <p className="text-sm text-gray-400">Manage your Customer and Details</p>
@@ -82,4 +86,4 @@ function Loged() {
   );
 }
 
-export default Loged;
+export default Logged;

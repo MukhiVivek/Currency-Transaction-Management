@@ -1,8 +1,25 @@
 import express from "express";
 import user from "../models/user";
 import jwt from "jsonwebtoken";
+import { checkuserlogin } from "../checkuser";
 
 const router = express.Router({ mergeParams: true });
+
+
+
+router.get("/data",checkuserlogin, async (req, res) => {   
+    try {
+        //@ts-ignore
+        const data = await user.findById(req?.userId);
+        res.json({
+            data
+        })
+    } catch(e) {
+        res.status(403).json({
+            message: "You are not logged in"
+        })
+    }
+});
 
 router.post("/signup", async (req, res) => {
   // TODO: zod validation , hash the password

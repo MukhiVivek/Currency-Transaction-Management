@@ -70,6 +70,8 @@ router.post("/add", checkuserlogin, async (req: any, res: any) => {
             rate,
             status: "success",
             note,
+            r_balance: (receiver_id as any)[r_currency],
+            s_balance: (sender_id as any)[s_currency],
             //@ts-ignore
             creater_id: req.userId
         }], { session });

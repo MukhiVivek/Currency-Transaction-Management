@@ -1,71 +1,111 @@
-
-import { LineChart, BarChart, PieChart } from '@mui/x-charts';
-import { useState } from 'react';
+import { LineChart, PieChart } from '@mui/x-charts';
+import { useEffect, useState } from 'react';
 import Filter from '../../icons/Filtericon';
-import useTransaction from '../../hooks/useTransaction';
+import UseHomeData from './HomeData';
+import { useUser } from '../../hooks/useUser';
+
+interface SummaryProps {
+    INR: number;
+    USD: number;
+    RUB: number;
+    filteredData: number;
+}
 
 const Home = () => {
-
-    const transactionData = useTransaction();
-
-    console.log(transactionData);
+    const userData : any = useUser();
     
-    
-    const [summary] = useState({
-        INR: 5000,
-        USD: 2300,
-        RUB: 10000,
-        received: 15000,
-        sent: 11000,
-        transactions: 45
+    const [Day, setDay] = useState<number>(1); // 1, 7, 30, 0 (0 = all)
+
+    const filteredData = UseHomeData(Day);
+
+    const totalReceivedINR = filteredData
+        .filter((tx) => tx.r_currency === 'INR')
+        .reduce((sum, tx) => sum + tx.r_amount, 0);
+
+    const transactionCount = filteredData.length;
+
+    const totalReceivedUSD = filteredData
+        .filter((tx) => tx.r_currency === 'USD')
+        .reduce((sum, tx) => sum + tx.r_amount, 0);
+
+    const totalReceivedRUB = filteredData
+        .filter((tx) => tx.r_currency === 'RUB')
+        .reduce((sum, tx) => sum + tx.r_amount, 0);
+
+    const [summary, setSummary] = useState<SummaryProps>({
+        INR: 0,
+        USD: 0,
+        RUB: 0,
+        filteredData: 0,
     });
+    useEffect(() => {
+        setSummary({
+            INR: totalReceivedINR,
+            USD: totalReceivedUSD,
+            RUB: totalReceivedRUB,
+            filteredData: transactionCount,
+        });
+    }, [filteredData]);
 
     const ringData = [
-        { id: 'INR', value: summary.INR, label: 'INR (₹)' },
-        { id: 'USD', value: summary.USD, label: 'USD ($)' },
-        { id: 'RUB', value: summary.RUB, label: 'RUB (₽)' },
+        { id: 'INR', value: summary.INR, label: `${new Intl.NumberFormat('en-IN').format(summary.INR)} (₹)` },
+        { id: 'USD', value: summary.USD, label: `${new Intl.NumberFormat('en-IN').format(summary.USD)} ($)` },
+        { id: 'RUB', value: summary.RUB, label: `${new Intl.NumberFormat('en-IN').format(summary.RUB)} (₽)` },
     ];
 
-    const lineChartData = [
-        { date: '2025-04-01', amount: 300 },
-        { date: '2025-04-05', amount: 800 },
-        { date: '2025-04-10', amount: 1200 },
-        { date: '2025-04-15', amount: 1500 },
-        { date: '2025-04-20', amount: 900 },
-        { date: '2025-04-25', amount: 1300 },
-    ];
+    const lineChartDataMap = new Map<string, number>();
 
-    const barChartData = [
-        { currency: 'INR', received: 5000, sent: 4000 },
-        { currency: 'USD', received: 3000, sent: 2500 },
-        { currency: 'RUB', received: 7000, sent: 6000 },
-    ];
+    const Day30Data = UseHomeData(30);
+
+    Day30Data.forEach((tx) => {
+        const date = new Date(tx.date).toLocaleDateString();
+        const amount = tx.r_currency === 'INR' ? tx.r_amount : 0;
+
+        if (lineChartDataMap.has(date)) {
+            lineChartDataMap.set(date, lineChartDataMap.get(date)! + amount);
+        } else {
+            lineChartDataMap.set(date, amount);
+        }
+    });
+
+    const lineChartData = Array.from(lineChartDataMap.entries()).map(([date, amount]) => ({
+        date,
+        amount,
+    }));
+
 
     return (
         <div className="min-h-screen p-6 bg-gradient-to-br from-white to-gray-100 dark:from-black dark:to-gray-900 dark:text-white">
-            <h1 className=" text-3xl font-bold mb-3">Hello Vivek</h1>
 
-            <h3 className='mb-2 text-blue-500'><Filter /> Filter</h3>
-            
+            <div className='flex items-center justify-between mb-6'>
+                <h1 className=" text-3xl font-bold mb-3">Hello {userData.data.username}</h1>
+                <div className='flex items-center justify-center'>
+
+                    <select
+                        onChange={(e) => setDay(Number(e.target.value))}
+                        className='p-2 m-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all'
+                    >
+                        <option key={1} value={1}>Today</option>
+                        <option key={7} value={7}>7 Days</option>
+                        <option key={30} value={30}>30 Days</option>
+                        <option key={0} value={0}>All Time</option>
+                    </select>
+                    <div className=' text-blue-500 flex  items-center'><Filter />Filter</div>
+                </div>
+
+            </div>
+
             {/* Summary Cards */}
-            <div className="grid grid-flow-col grid-rows-3  gap-4 mb-10">
+            <div className="grid grid-flow-col grid-rows-2  gap-4 mb-10">
                 {['INR', 'USD', 'RUB'].map((currency) => (
-                    <div className="bg-white dark:bg-gray-800 shadow p-4 rounded-lg text-center" key={currency}>
+                    <div className="bg-white dark:bg-gray-900 shadow p-4 rounded-lg text-center" key={currency}>
                         <h2 className="text-xl font-semibold">{currency}</h2>
                         <p className="text-2xl mt-2">{new Intl.NumberFormat('en-IN').format(summary[currency as keyof typeof summary])}</p>
                     </div>
                 ))}
-                <div className="bg-green-100 dark:bg-green-900 p-4 rounded-lg text-center">
-                    <h2 className="text-xl font-semibold">Received</h2>
-                    <p className="text-2xl mt-2">{summary.received}</p>
-                </div>
-                <div className="bg-red-100 dark:bg-red-900 p-4 rounded-lg text-center">
-                    <h2 className="text-xl font-semibold">Sent</h2>
-                    <p className="text-2xl mt-2">{summary.sent}</p>
-                </div>
-                <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-lg text-center">
-                    <h2 className="text-xl font-semibold">Transactions</h2>
-                    <p className="text-2xl mt-2">{summary.transactions}</p>
+                <div className="bg-blue-100 dark:bg-gray-900 p-4 rounded-lg text-center">
+                    <h2 className="text-xl font-semibold">Transaction Count</h2>
+                    <p className="text-2xl mt-2">{summary.filteredData}</p>
                 </div>
             </div>
 
@@ -80,17 +120,6 @@ const Home = () => {
                     />
                 </div>
                 <div className="bg-white dark:bg-gray-800 hover:bg-gray-500 p-4 rounded-lg shadow">
-                    <h2 className="mb-4 font-semibold">📊 Sent vs Received</h2>
-                    <BarChart
-                        xAxis={[{ scaleType: 'band', data: barChartData.map(d => d.currency) }]}
-                        series={[
-                            { data: barChartData.map(d => d.received), label: 'Received' },
-                            { data: barChartData.map(d => d.sent), label: 'Sent' },
-                        ]}
-                        height={300}
-                    />
-                </div>
-                <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow col-span-full">
                     <h2 className="mb-4 font-semibold">🧭 Currency Distribution</h2>
                     <PieChart series={[{ data: ringData, innerRadius: 60 }]} width={400} height={300} />
                 </div>
