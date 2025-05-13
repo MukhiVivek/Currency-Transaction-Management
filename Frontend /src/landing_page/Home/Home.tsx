@@ -4,13 +4,6 @@ import Filter from '../../icons/Filtericon';
 import UseHomeData from './HomeData';
 import { useUser } from '../../hooks/useUser';
 
-interface SummaryProps {
-    INR: number;
-    USD: number;
-    RUB: number;
-    filteredData: number;
-}
-
 const Home = () => {
     const userData : any = useUser();
     
@@ -32,7 +25,7 @@ const Home = () => {
         .filter((tx) => tx.r_currency === 'RUB')
         .reduce((sum, tx) => sum + tx.r_amount, 0);
 
-    const [summary, setSummary] = useState<SummaryProps>({
+    const [summary, setSummary] = useState<any>({
         INR: 0,
         USD: 0,
         RUB: 0,

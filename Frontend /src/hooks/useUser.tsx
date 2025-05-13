@@ -2,6 +2,14 @@ import axios from "axios";
 import {  useEffect, useState } from "react";
 import { BACKEND_URL } from "../Config";
 
+export interface UserData {
+    id: string;
+    email: string;
+    phone: string;
+    username: string;
+    password: string;
+}
+
 export function useUser() {
     const [data , setData] = useState([]);
 
