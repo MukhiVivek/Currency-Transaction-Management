@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
 import useTransaction, { Transaction } from "../../hooks/useTransaction";
-import { useUser } from "../../hooks/useUser";
-
-interface SummaryProps {
-    totalReceived: number;
-    totalSent: number;
-    transactionCount: number;
-}
 
 function UseHomeData(Day: number) {
 
