@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { BACKEND_URL } from '../Config';
 import { useCustomer } from '../hooks/useCustomer';
+import Exchangeicon from '../icons/Exchangeicon';
 
 const currencies = ['INR', 'USD', 'RUB'];
 
@@ -53,6 +54,17 @@ const TransitionPag: React.FC = () => {
 
   const { data } = useCustomer();
 
+  function Exchange(){
+    setSenderName(receiverName);
+    setSenderAmount(receiverAmount);
+    setReceiverName(senderName);
+    setReceiverAmount(senderAmount);
+    setReceiverCurrency(senderCurrency);
+    setSenderCurrency(receiverCurrency);
+    //@ts-ignore
+    setRate((senderAmount / receiverAmount) || 1);
+  }
+
   return (
     <div className="bg-white dark:bg-black p-4 sm:p-6 rounded-none sm:rounded-2xl shadow-none sm:shadow-lg w-full min-h-screen  justify-between">
       <div className="space-y-6">
@@ -93,7 +105,15 @@ const TransitionPag: React.FC = () => {
         </div>
 
         {/* Rate Section */}
-        <div className="text-center py-4">
+        <div className="text-center py-4 flex justify-center items-center">
+
+          <button 
+            onClick={Exchange}
+            className='bg-gray-600 h-10 w-10 rounded-full flex justify-center items-center mr-12 mt-4'>  
+              <Exchangeicon />
+          </button>
+          
+          <div>
           <h2 className="text-sm text-gray-600 dark:text-gray-400 mb-1">Exchange Rate</h2>
           <input
             type="number"
@@ -105,7 +125,9 @@ const TransitionPag: React.FC = () => {
             }}
             className="w-32 text-center p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
           />
+          </div>
         </div>
+        
 
         {/* Receiver Section */}
         <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl">
@@ -128,7 +150,9 @@ const TransitionPag: React.FC = () => {
             />
             <select
               value={receiverCurrency}
-              onChange={(e) => setReceiverCurrency(e.target.value)}
+              onChange={(e) => 
+                setReceiverCurrency(e.target.value)
+              }
               className={selectClass}
             >
               {currencies.map((cur) => (
