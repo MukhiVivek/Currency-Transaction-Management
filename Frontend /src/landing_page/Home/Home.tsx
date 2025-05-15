@@ -41,9 +41,9 @@ const Home = () => {
     }, [filteredData]);
 
     const ringData = [
-        { id: 'INR', value: summary.INR, label: `${new Intl.NumberFormat('en-IN').format(summary.INR)} (₹)` },
-        { id: 'USD', value: summary.USD, label: `${new Intl.NumberFormat('en-IN').format(summary.USD)} ($)` },
-        { id: 'RUB', value: summary.RUB, label: `${new Intl.NumberFormat('en-IN').format(summary.RUB)} (₽)` },
+        { id: 'INR', value: (summary.INR) / 87, label:  `INR : ${new Intl.NumberFormat('en-IN').format(summary.INR / 87)} $` },
+        { id: 'USD', value: summary.USD, label: `USD :  ${new Intl.NumberFormat('en-IN').format(summary.USD)} $` },
+        { id: 'RUB', value: summary.RUB / 61, label: `RUB : ${new Intl.NumberFormat('en-IN').format(summary.RUB)} $` },
     ];
 
     const lineChartDataMap = new Map<string, number>();
@@ -114,7 +114,7 @@ const Home = () => {
                 </div>
                 <div className="bg-white dark:bg-gray-800 hover:bg-gray-500 p-4 rounded-lg shadow">
                     <h2 className="mb-4 font-semibold">🧭 Currency Distribution</h2>
-                    <PieChart series={[{ data: ringData, innerRadius: 60 }]} width={400} height={300} />
+                    <PieChart series={[{ data: ringData, innerRadius: 90 }]} width={400} height={300} />
                 </div>
             </div>
         </div>
