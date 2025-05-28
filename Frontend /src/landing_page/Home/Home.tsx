@@ -4,8 +4,12 @@ import Filter from '../../icons/Filtericon';
 import UseHomeData from './HomeData';
 import { useUser } from '../../hooks/useUser';
 
+
 const Home = () => {
+    
     const userData : any = useUser();
+
+    console.log(userData);
     
     const [Day, setDay] = useState<number>(1); // 1, 7, 30, 0 (0 = all)
 
@@ -71,7 +75,7 @@ const Home = () => {
         <div className="min-h-screen p-6 bg-gradient-to-br from-white to-gray-100 dark:from-black dark:to-gray-900 dark:text-white">
 
             <div className='flex items-center justify-between mb-6'>
-                <h1 className=" text-3xl font-bold mb-3">Hello {userData.data.username}</h1>
+                <h1 className=" text-3xl font-bold mb-3">Hello {userData?.data?.username}</h1>
                 <div className='flex items-center justify-center'>
 
                     <select
