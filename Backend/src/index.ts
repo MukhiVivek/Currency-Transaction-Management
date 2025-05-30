@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from "express";
-import mongoose from "mongoose";
+import mongoose, { set } from "mongoose";
 import cors from "cors";
 
 const app = express();
@@ -38,8 +38,13 @@ app.get("/", (req, res) =>{
   console.log("Connected to server");
   
   res.send("Server is online");
+
 });
 
+setInterval(() => {
+  console.log("Server is alive");
+}
+, 10000); // Log every 10 seconds
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
