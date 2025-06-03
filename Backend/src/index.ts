@@ -41,11 +41,6 @@ app.get("/", (req, res) =>{
 
 });
 
-setInterval(() => {
-  console.log("Server is alive");
-}
-, 10000); // Log every 10 seconds
-
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
