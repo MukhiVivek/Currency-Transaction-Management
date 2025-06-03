@@ -8,8 +8,6 @@ import { useUser } from '../../hooks/useUser';
 const Home = () => {
     
     const userData : any = useUser();
-
-    console.log(userData);
     
     const [Day, setDay] = useState<number>(1); // 1, 7, 30, 0 (0 = all)
 
@@ -93,7 +91,7 @@ const Home = () => {
             </div>
 
             {/* Summary Cards */}
-            <div className="grid grid-flow-col grid-rows-2  gap-4 mb-10">
+            <div className="grid grid-flow-col grid-rows-2 gap-3 mb-10">
                 {['INR', 'USD', 'RUB'].map((currency) => (
                     <div className="bg-white dark:bg-gray-900 shadow p-4 rounded-lg text-center" key={currency}>
                         <h2 className="text-xl font-semibold">{currency}</h2>
@@ -101,7 +99,7 @@ const Home = () => {
                     </div>
                 ))}
                 <div className="bg-blue-100 dark:bg-gray-900 p-4 rounded-lg text-center">
-                    <h2 className="text-xl font-semibold">Transaction Count</h2>
+                    <h2 className="text-xl font-semibold">Transaction No.</h2>
                     <p className="text-2xl mt-2">{summary.filteredData}</p>
                 </div>
             </div>
