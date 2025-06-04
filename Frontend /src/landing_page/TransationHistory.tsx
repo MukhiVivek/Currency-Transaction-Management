@@ -4,6 +4,7 @@ import useTransaction from "../hooks/useTransaction";
 // Rename 'data' to avoid conflict with variable name
 interface TransactionData {
   date: string;
+  _id: string;
   sender_id: {
     name: string;
     amount: number;
@@ -31,6 +32,7 @@ function Transation() {
       {transactions.map((transaction, index) => (
         <TransactionCard
           key={index} // ⚠️ You should use a unique ID instead of index if available
+          id={transaction._id}
           date={transaction.date}
           sender_name={transaction.sender_id.name}
           s_amount={transaction.s_amount}

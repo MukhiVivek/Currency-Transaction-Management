@@ -1,4 +1,9 @@
+import { Link } from "react-router-dom";
+import Deleteicon from "../icons/Deleteicon";
+import EditIcon from "../icons/editicon";
+
 interface data {
+  id: string;
   date: string;
   sender_name: string;
   s_amount: number;
@@ -11,7 +16,7 @@ interface data {
 }
 
 
-function TransactionCard({ date, sender_name, s_amount, s_currency, receiver_name, r_amount, r_currency, rate, status }: data) {
+function TransactionCard({ date, sender_name, s_amount, s_currency, receiver_name, r_amount, r_currency, rate, status , id }: data) {
 
   if (s_currency === "INR") {
     s_currency = "₹";
@@ -37,7 +42,6 @@ function TransactionCard({ date, sender_name, s_amount, s_currency, receiver_nam
       </div>
 
       <div className="flex items-center justify-between">
-
         <div className="flex flex-col text-left">
           <span className="font-semibold text-lg text-black dark:text-white">{sender_name}</span>
           <span className="text-gray-500 dark:text-gray-400">{new Intl.NumberFormat('en-IN').format(s_amount)} {s_currency}</span>
@@ -51,9 +55,20 @@ function TransactionCard({ date, sender_name, s_amount, s_currency, receiver_nam
         </div>
       </div>
 
-      <div className="mt-3 text-right text-sm text-gray-500 dark:text-gray-400">
-        Rate: 1 {s_currency} =&gt; {rate} {r_currency}
+      <div className="flex items-center justify-between mt-3">
+        <div className="mt-3 inline-block text-left text-sm text-gray-500 dark:text-gray-400">
+          Rate: 1 {s_currency} =&gt; {rate} {r_currency}
+        </div>
+        <div className="mt-3  inline-block text-right text-sm text-gray-500 dark:text-gray-400">
+          <Link to={`/transaction/edit/${id}`} className="inline-block">
+            <EditIcon />
+          </Link>
+          <Link to={`/delete/${id}`} className="ml-2 inline-block">
+            <Deleteicon />
+          </Link >
+        </div>
       </div>
+      
     </div>
   );
 }

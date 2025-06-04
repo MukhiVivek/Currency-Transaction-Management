@@ -11,6 +11,7 @@ import SignIn from './landing_page/Signin';
 import AddCustomer from './landing_page/AddCustomer';
 import DetailCustomer from './landing_page/DetailCustomer';
 import ScrollToTop from './hooks/useScrollToTop';
+import Edit_Transaction from './landing_page/Edit_Transaction';
 function App() {
 
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/transaction" element={<TransactionCard />} />
           <Route path="/transition" element={<TransitionPag />} />
+          <Route path="/transaction/edit/:id" element={<Edit_Transaction />} />
           <Route path="/customer" element={<Customer />} />
           <Route path="/console" element={<Console />} />
           <Route path="/signup" element={<SignUp />} />
