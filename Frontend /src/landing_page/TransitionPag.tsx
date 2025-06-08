@@ -38,15 +38,6 @@ const TransitionPag: React.FC = () => {
 
     alert(" Transaction Successfully Added");
 
-    setvalue()
-  }
-
-  function setvalue() {
-    setSenderName("");
-    setSenderAmount(0);
-    setReceiverName("");
-    setReceiverAmount(0);
-    setRate(1);
   }
 
   const inputClass = "w-full p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all";
