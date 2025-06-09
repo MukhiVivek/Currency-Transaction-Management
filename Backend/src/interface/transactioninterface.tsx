@@ -1,4 +1,4 @@
-export interface transaction {
+export interface Transaction {
     _id?: string;
     date?: Date;    
     sender_id?: string;

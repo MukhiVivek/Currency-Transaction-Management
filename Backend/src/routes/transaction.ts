@@ -196,44 +196,40 @@ router.post("/edit/:id", checkuserlogin , async (req: any, res: any) => {
     }
 })
 
+router.delete("/:id", checkuserlogin, async (req : any, res : any) => {
+    try {
+        const { id } = req.params;
 
+        const session = await mongoose.startSession();
+        session.startTransaction();
 
-// router.delete("/:id", checkuserlogin, async (req, res) => {
-//     try {
-//         const { id } = req.params;
+        const transactionData : any = await transaction.findOne({ _id: id }).session(session);
 
-//         const session = await mongoose.startSession();
-//         session.startTransaction();
+        if (!transactionData) {
+            return res.status(404).json({ message: "Transaction not found" });
+        }
 
-//         const transactionData = await transaction.findOne({ _id: id }).session(session);
+        const sender_id = await customer.findById(transactionData.sender_id).session(session);
+        const receiver_id = await customer.findById(transactionData.receiver_id).session(session);
 
-//         if (!transactionData) {
-//             return res.status(404).json({ message: "Transaction not found" });
-//         }
+        (sender_id as any)[transactionData.s_currency] += transactionData.s_amount;
+        (receiver_id as any)[transactionData.r_currency] -= transactionData.r_amount;
 
-//         const sender_id = await customer.findById(transactionData.sender_id).session(session);
-//         const receiver_id = await customer.findById(transactionData.receiver_id).session(session);
+        await (sender_id as any).save({ session });
+        await (receiver_id as any).save({ session });
 
-//         (sender_id as any)[transactionData.s_currency] += transactionData.s_amount;
-//         (receiver_id as any)[transactionData.r_currency] -= transactionData.r_amount;
+        await transaction.deleteOne({ _id: id }).session(session);
 
-//         await (sender_id as any).save({ session });
-//         await (receiver_id as any).save({ session });
+        await session.commitTransaction();
+        session.endSession();
 
-//         await transaction.deleteOne({ _id: id }).session(session);
-
-//         await session.commitTransaction();
-//         session.endSession();
-
-//         res.status(201).json({
-//             message: "Transaction deleted successfully"
-//         })
-//     } catch (e) {
-//         await session.abortTransaction();
-//         session.endSession();
-//         return res.status(500).json({ message: "Something went wrong" });
-//     }
-// })
+        res.status(201).json({
+            message: "Transaction deleted successfully"
+        })
+    } catch (e) {
+        return res.status(500).json({ message: "Something went wrong" });
+    }
+})
 
 router.get("/:id", checkuserlogin, async (req : any, res) => {
     try {

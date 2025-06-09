@@ -5,8 +5,6 @@ import { checkuserlogin } from "../checkuser";
 
 const router = express.Router({ mergeParams: true });
 
-
-
 router.get("/data",checkuserlogin, async (req, res) => {   
     try {
         //@ts-ignore

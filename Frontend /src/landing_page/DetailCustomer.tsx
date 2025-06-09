@@ -54,6 +54,8 @@ function DetailCustomer() {
 
   const { transactionsdata, customerdata } = useCustomerDetailData(id);
 
+  console.log(transactionsdata);
+
   return (
     <>
       <div className="min-h-screen justify-between bg-gradient-to-br dark:from-gray-900 dark:via-black dark:to-gray-900 dark:text-white p-4">
@@ -103,7 +105,11 @@ function DetailCustomer() {
                   <td className="px-6 py-3 whitespace-nowrap ">{currencySymbols[transaction.s_currency] + " "}{new Intl.NumberFormat('en-IN').format(Math.abs(transaction.sender_id.name == customerdata.name ? transaction.s_amount : 0))}</td>
                   <td className="px-6 py-3 whitespace-nowrap ">{transaction.rate}</td>
                   <td className="px-6 py-3 whitespace-nowrap ">{currencySymbols[transaction.r_currency]} =&gt; {currencySymbols[transaction.s_currency]}</td>
-                  <td className={`px-6 py-3 whitespace-nowrap`}>{transaction.sender_id.name == customerdata.name ? currencySymbols[transaction.r_currency] +  (new Intl.NumberFormat('en-IN').format(Math.abs(transaction.s_balance))) : currencySymbols[transaction.r_currency] + " " + (new Intl.NumberFormat('en-IN').format(Math.abs(transaction.r_balance)))}</td>
+                  <td className={`px-6 py-3 whitespace-nowrap`}>
+                    {transaction.sender_id.name == customerdata.name ? 
+                      currencySymbols[transaction.s_currency] +  (new Intl.NumberFormat('en-IN').format(Math.abs(transaction.s_balance)))   : 
+                      currencySymbols[transaction.r_currency] + " " + (new Intl.NumberFormat('en-IN').format(Math.abs(transaction.r_balance)))
+                    }</td>
                   <td className="px-6 py-3 whitespace-nowrap  text-green-500 font-semibold">{transaction.status}</td>
                 </tr>
               )}

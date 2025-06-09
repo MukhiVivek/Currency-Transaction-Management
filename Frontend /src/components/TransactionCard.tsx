@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import Deleteicon from "../icons/Deleteicon";
 import EditIcon from "../icons/editicon";
+import { BACKEND_URL } from "../Config";
+import axios from "axios";
 
 interface data {
   id: string;
@@ -34,6 +36,21 @@ function TransactionCard({ date, sender_name, s_amount, s_currency, receiver_nam
     r_currency = "$";
   };
 
+  function deleteTransaction(){
+    axios.delete(BACKEND_URL + "/api/v1/transaction/" + id, {
+      headers: {
+        token: localStorage.getItem("token")
+      }
+    })
+    .then(() => {
+      alert("Transaction Deleted Successfully");
+      window.location.reload();
+    })
+    .catch(() => {
+      alert("Something went wrong");
+    });
+  }
+
   return (
     <div className=" bg-white dark:bg-black border dark:border-gray-700 rounded-2xl shadow-lg p-3  mb-4 w-full max-w-2xl mx-auto transition-colors duration-300">
       <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400 mb-2">
@@ -63,9 +80,16 @@ function TransactionCard({ date, sender_name, s_amount, s_currency, receiver_nam
           <Link to={`/transaction/edit/${id}`} className="inline-block">
             <EditIcon />
           </Link>
-          <Link to={`/delete/${id}`} className="ml-2 inline-block">
+          <div 
+            className="ml-2 inline-block cursor-pointer"
+            onClick={() =>{
+              if (window.confirm("Are you sure you want to delete this transaction?")) {
+                  deleteTransaction();
+                }
+            }}
+            >
             <Deleteicon />
-          </Link >
+          </div >
         </div>
       </div>
       
