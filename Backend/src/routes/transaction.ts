@@ -123,7 +123,6 @@ router.post("/edit/:id", checkuserlogin , async (req: any, res: any) => {
     try {
         const { id } = req.params;
         const {
-            date = new Date(),
             sender_name,
             s_amount,
             s_currency,
@@ -161,7 +160,6 @@ router.post("/edit/:id", checkuserlogin , async (req: any, res: any) => {
             await transaction.findOneAndUpdate({
                 _id: id
             }, {
-                date,
                 sender_id: sender_id?._id,
                 s_amount,
                 s_currency,
@@ -174,7 +172,8 @@ router.post("/edit/:id", checkuserlogin , async (req: any, res: any) => {
                 r_balance: (receiver_id as any)[r_currency],
                 s_balance: (sender_id as any)[s_currency],
                 //@ts-ignore
-                creater_id: req.userId
+                creater_id: req.userId,
+                edit_date: new Date(),
             }, { session });
 
 

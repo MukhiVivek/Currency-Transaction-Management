@@ -19,10 +19,11 @@ const transactionSchema = new mongoose.Schema({
   status : String,
   rate: Number,
   note : String,  
+  edit_date : Date,
   creater_id : {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
-  },
+  },  
 });
 
 const transaction =  mongoose.model("transaction", transactionSchema);
