@@ -14,6 +14,8 @@ const Edit_Transaction: React.FC = () => {
 
     const transaction: any = useOneTransactionDetail(id);
 
+    console.log(transaction);
+
     const [senderName, setSenderName] = useState('');
     const [senderAmount, setSenderAmount] = useState<number>();
     const [senderCurrency, setSenderCurrency] = useState('INR');

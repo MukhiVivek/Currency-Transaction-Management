@@ -94,6 +94,29 @@ router.post("/add", checkuserlogin, async (req: any, res: any) => {
     }
 });
 
+router.get("/detail/:id", checkuserlogin, async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const data = await transaction.find({
+            $or: [
+                { sender_id: id },
+                { receiver_id: id }
+            ],
+            //@ts-ignore
+            creater_id: req.userId, // Optional: filters by who created the transaction
+        }).populate("sender_id").populate("receiver_id");
+
+        res.json({
+            data
+        })
+    } catch (e) {
+        res.status(403).json({
+            message: "You are not logged in"
+        })
+    }
+})
+
 // transaction edit
 
 router.post("/edit/:id", checkuserlogin , async (req: any, res: any) => {
@@ -174,6 +197,8 @@ router.post("/edit/:id", checkuserlogin , async (req: any, res: any) => {
     }
 })
 
+
+
 // router.delete("/:id", checkuserlogin, async (req, res) => {
 //     try {
 //         const { id } = req.params;
@@ -211,28 +236,21 @@ router.post("/edit/:id", checkuserlogin , async (req: any, res: any) => {
 //     }
 // })
 
-router.get("detail/:id", checkuserlogin, async (req, res) => {
+router.get("/:id", checkuserlogin, async (req : any, res) => {
     try {
         const { id } = req.params;
 
-        const data = await transaction.find({
-            $or: [
-                { sender_id: id },
-                { receiver_id: id }
-            ],
-            //@ts-ignore
-            creater_id: req.userId, // Optional: filters by who created the transaction
-        }).populate("sender_id").populate("receiver_id");
-
+        const data = await transaction.findById(id).populate("sender_id").populate("receiver_id");
+        
         res.json({
             data
         })
-    } catch (e) {
+    }catch(e) {
         res.status(403).json({
             message: "You are not logged in"
         })
-    }
-})
+    }  
+});
 
 
 export default router;
