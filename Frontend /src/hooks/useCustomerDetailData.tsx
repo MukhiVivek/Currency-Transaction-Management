@@ -64,7 +64,7 @@ export function useCustomerDetailData(id : string | undefined) {
     }
 
     async function getTransactionData() {
-        await axios.get(`${BACKEND_URL}/api/v1/transaction/${id}`, {
+        await axios.get(`${BACKEND_URL}/api/v1/transaction/detail/${id}`, {
             headers: {
                 "token": localStorage.getItem("token")
             }

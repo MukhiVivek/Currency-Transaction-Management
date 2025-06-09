@@ -211,12 +211,15 @@ router.post("/edit/:id", checkuserlogin , async (req: any, res: any) => {
 //     }
 // })
 
-router.get("/:id", checkuserlogin, async (req, res) => {
+router.get("detail/:id", checkuserlogin, async (req, res) => {
     try {
         const { id } = req.params;
 
-        const data = await transaction.findOne({
-            _id: id,
+        const data = await transaction.find({
+            $or: [
+                { sender_id: id },
+                { receiver_id: id }
+            ],
             //@ts-ignore
             creater_id: req.userId, // Optional: filters by who created the transaction
         }).populate("sender_id").populate("receiver_id");
